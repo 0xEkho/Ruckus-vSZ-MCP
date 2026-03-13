@@ -27,7 +27,9 @@ ENV/
 
 # uv
 .uv/
-uv.lock
+# Note: uv.lock should be committed for applications (reproducible installs)
+# Only ignore it for libraries. Remove this line if this is an application:
+# uv.lock
 
 # Environment variables
 .env

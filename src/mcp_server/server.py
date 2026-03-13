@@ -11,6 +11,10 @@ import sys
 from dotenv import load_dotenv
 from mcp.server.fastmcp import FastMCP
 
+from mcp_server.prompts.example import register_prompts
+from mcp_server.resources.example import register_resources
+from mcp_server.tools.example import register_tools
+
 # Load environment variables from .env file (if present)
 load_dotenv()
 
@@ -28,12 +32,7 @@ mcp = FastMCP(
     version=os.getenv("MCP_SERVER_VERSION", "0.1.0"),
 )
 
-# Register tools, resources, and prompts by importing their modules
-# Each module registers its primitives on the shared `mcp` instance
-from mcp_server.tools.example import register_tools       # noqa: E402, F401
-from mcp_server.resources.example import register_resources  # noqa: E402, F401
-from mcp_server.prompts.example import register_prompts    # noqa: E402, F401
-
+# Register all primitives on the server instance
 register_tools(mcp)
 register_resources(mcp)
 register_prompts(mcp)

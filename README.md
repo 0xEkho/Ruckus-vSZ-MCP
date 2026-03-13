@@ -267,6 +267,30 @@ Ces bonnes pratiques sont issues des [spécifications officielles MCP](https://m
 
 ---
 
+## 🤖 Agents Copilot intégrés
+
+Ce template embarque 4 agents Copilot spécialisés (`.github/agents/`) qui respectent automatiquement la séparation des responsabilités. Ils sont utilisables dans **Copilot CLI** et **VS Code Copilot Chat**.
+
+| Agent | Domaine |
+|-------|---------|
+| `mcp-developer` | Code source : `src/mcp_server/` (tools, resources, prompts) |
+| `mcp-tester` | Tests : `tests/` — ne modifie jamais `src/` |
+| `mcp-scaffolder` | Config : `pyproject.toml`, `.gitignore`, `.env.example` |
+| `mcp-documenter` | Docs : `README.md`, docstrings, `AGENTS.md` |
+
+**Utilisation :**
+```bash
+# Sélectionner un agent dans Copilot CLI
+/agent
+
+# Ou directement dans un prompt
+Use mcp-developer to add a tool that queries the GitHub API
+```
+
+> Le fichier `.github/copilot-instructions.md` impose la délégation automatique au bon agent à chaque prompt dans ce repo.
+
+---
+
 ## 🔗 Ressources
 
 - [MCP Documentation](https://modelcontextprotocol.io)

@@ -54,11 +54,19 @@ async def test_tool_returns_error_gracefully(mcp_instance):
 ```python
 from unittest.mock import AsyncMock, patch
 
-async def test_with_mocked_http():
-    with patch("httpx.AsyncClient") as mock:
-        mock.return_value.__aenter__ = AsyncMock(return_value=mock_client)
-        mock.return_value.__aexit__ = AsyncMock(return_value=False)
-        ...
+# ⚠️ Toujours patcher là où le symbole est UTILISÉ, pas là où il est défini
+# ✅ Correct — patch dans le module qui l'importe
+async def test_with_mocked_http(mcp_with_tools):
+    with patch("mcp_server.tools.example.httpx.AsyncClient") as mock_cls:
+        mock_client = AsyncMock()
+        mock_cls.return_value.__aenter__ = AsyncMock(return_value=mock_client)
+        mock_cls.return_value.__aexit__ = AsyncMock(return_value=False)
+        mock_client.get = AsyncMock(side_effect=Exception("network error"))
+        result = await mcp_with_tools.call_tool("fetch_url", {"url": "https://example.com"})
+        assert "Error" in result[0].text
+
+# ❌ Incorrect — patch au niveau global (ne fonctionne pas)
+# with patch("httpx.AsyncClient") as mock:  ← NE PAS FAIRE
 ```
 
 ## Ce que tu DOIS tester

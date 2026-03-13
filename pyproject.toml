@@ -24,9 +24,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/modelcontextprotocol/python-sdk"
+Homepage = "https://github.com/0xEkho/MCP-Template"
 Documentation = "https://modelcontextprotocol.io"
-Issues = "https://github.com/modelcontextprotocol/python-sdk/issues"
+"Bug Tracker" = "https://github.com/0xEkho/MCP-Template/issues"
 
 [project.scripts]
 mcp-server = "mcp_server.server:main"
