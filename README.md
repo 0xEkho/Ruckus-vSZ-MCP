@@ -65,6 +65,30 @@ MCP-Template/
 
 ---
 
+## 📦 Primitives incluses par défaut
+
+Ce template embarque des exemples fonctionnels et testés de chaque type de primitive MCP.
+Supprime-les ou remplace-les par tes propres implémentations.
+
+### 🔧 Tools — exécutés par le modèle
+| Nom | Description |
+|-----|-------------|
+| `echo` | Renvoie un message en écho — utile pour tester la connectivité |
+| `fetch_url` | Récupère le contenu textuel d'une URL HTTP/HTTPS |
+
+### 📄 Resources — lues par l'application
+| URI | Description |
+|-----|-------------|
+| `config://server-info` | Métadonnées du serveur (nom, version, transport) |
+| `docs://getting-started` | Guide de démarrage en Markdown |
+
+### 💬 Prompts — déclenchés par l'utilisateur
+| Nom | Arguments | Description |
+|-----|-----------|-------------|
+| `summarize` | `text`, `language` (optionnel) | Génère un prompt pour résumer un texte dans la langue choisie |
+
+---
+
 ## 🔧 Développement
 
 ### Ajouter un outil (tool)
