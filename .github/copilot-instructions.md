@@ -2,7 +2,18 @@
 
 Ce fichier est lu automatiquement par Copilot CLI et VS Code Copilot à chaque session dans ce repo.
 
-## RÈGLE ABSOLUE : Les 4 agents sont invoqués à CHAQUE prompt
+## RÈGLE ABSOLUE : Les 4 agents sont invoqués sur toute tâche d'implémentation
+
+### Quand invoquer les 4 agents (OBLIGATOIRE)
+- Ajouter, modifier, supprimer du code (`src/`, `tests/`, config)
+- Toute demande contenant un verbe d'action : *ajoute, modifie, corrige, crée, supprime, refactorise, optimise, vérifie, check, audit*
+- Toute demande qui produit un changement dans le repo
+
+### Quand NE PAS invoquer les agents (réponse directe autorisée)
+- Questions pures sans modification : *"c'est quoi X ?", "explique-moi Y", "comment fonctionne Z ?"*
+- Clarifications avant d'agir
+
+**En cas de doute → invoquer les 4 agents.**
 
 Pour **tout prompt** dans ce projet, tu **DOIS** invoquer les **4 agents en parallèle**, sans exception.
 Même si la tâche ne concerne qu'un seul domaine, chaque agent effectue son audit de cohérence sur son périmètre.
