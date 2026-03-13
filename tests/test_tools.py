@@ -5,8 +5,8 @@ from mcp.server.fastmcp import FastMCP
 
 
 @pytest.fixture
-def mcp_instance():
-    """Create a fresh FastMCP instance for testing."""
+def mcp_with_tools():
+    """Create a fresh FastMCP instance with tools registered."""
     instance = FastMCP("test-server")
     from mcp_server.tools.example import register_tools
     register_tools(instance)
@@ -14,42 +14,34 @@ def mcp_instance():
 
 
 @pytest.mark.asyncio
-async def test_echo_returns_message():
-    """Test that echo tool returns the message prefixed with 'Echo: '."""
-    mcp = FastMCP("test")
-    from mcp_server.tools.example import register_tools
-    register_tools(mcp)
-
-    # Access the registered tool function directly
-    tools = {t.name: t for t in await mcp.list_tools()}
+async def test_echo_tool_exists(mcp_with_tools):
+    """Test that echo tool is registered."""
+    tools = {t.name: t for t in await mcp_with_tools.list_tools()}
     assert "echo" in tools
 
-    result = await mcp.call_tool("echo", {"message": "hello"})
+
+@pytest.mark.asyncio
+async def test_echo_returns_message(mcp_with_tools):
+    """Test that echo tool returns the message prefixed with 'Echo: '."""
+    result = await mcp_with_tools.call_tool("echo", {"message": "hello"})
     assert len(result) > 0
     assert "hello" in result[0].text
 
 
 @pytest.mark.asyncio
-async def test_fetch_url_rejects_invalid_url():
+async def test_fetch_url_rejects_invalid_url(mcp_with_tools):
     """Test that fetch_url returns an error for non-HTTP URLs."""
-    mcp = FastMCP("test")
-    from mcp_server.tools.example import register_tools
-    register_tools(mcp)
-
-    result = await mcp.call_tool("fetch_url", {"url": "ftp://example.com"})
+    result = await mcp_with_tools.call_tool("fetch_url", {"url": "ftp://example.com"})
     assert len(result) > 0
     assert "Error" in result[0].text
 
 
 @pytest.mark.asyncio
-async def test_fetch_url_handles_http_error():
+async def test_fetch_url_handles_http_error(mcp_with_tools):
     """Test that fetch_url handles HTTP errors gracefully."""
     import httpx
-    mcp = FastMCP("test")
-    from mcp_server.tools.example import register_tools
-    register_tools(mcp)
 
-    with patch("httpx.AsyncClient") as mock_client_class:
+    with patch("mcp_server.tools.example.httpx.AsyncClient") as mock_client_class:
         mock_client = AsyncMock()
         mock_client_class.return_value.__aenter__ = AsyncMock(return_value=mock_client)
         mock_client_class.return_value.__aexit__ = AsyncMock(return_value=False)
@@ -62,6 +54,6 @@ async def test_fetch_url_handles_http_error():
             )
         )
 
-        result = await mcp.call_tool("fetch_url", {"url": "https://example.com/notfound"})
+        result = await mcp_with_tools.call_tool("fetch_url", {"url": "https://example.com/notfound"})
         assert len(result) > 0
         assert "Error" in result[0].text

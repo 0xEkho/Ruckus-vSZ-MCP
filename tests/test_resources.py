@@ -31,6 +31,8 @@ async def test_getting_started_resource_exists(mcp_with_resources):
 @pytest.mark.asyncio
 async def test_server_info_content(mcp_with_resources):
     """Test that server-info resource returns expected content."""
-    content, mime_type = await mcp_with_resources.read_resource("config://server-info")
+    result = await mcp_with_resources.read_resource("config://server-info")
+    # read_resource returns content as string or list; normalize to string
+    content = result if isinstance(result, str) else str(result)
     assert "mcp-server" in content
     assert "0.1.0" in content

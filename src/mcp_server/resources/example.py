@@ -10,12 +10,13 @@ Best practices:
 - Resources should be read-only and stable
 """
 import logging
-from typing import Any
+
+from mcp.server.fastmcp import FastMCP
 
 logger = logging.getLogger(__name__)
 
 
-def register_resources(mcp: Any) -> None:
+def register_resources(mcp: FastMCP) -> None:
     """Register all resources on the MCP server instance."""
 
     @mcp.resource("config://server-info")

@@ -11,14 +11,14 @@ Best practices:
 - Log to stderr, never stdout
 """
 import logging
-from typing import Any
 
 import httpx
+from mcp.server.fastmcp import FastMCP
 
 logger = logging.getLogger(__name__)
 
 
-def register_tools(mcp: Any) -> None:
+def register_tools(mcp: FastMCP) -> None:
     """Register all tools on the MCP server instance."""
 
     @mcp.tool()

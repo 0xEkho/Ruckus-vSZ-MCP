@@ -11,14 +11,14 @@ Best practices:
 - Use embedded resources when referencing server-managed content
 """
 import logging
-from typing import Any
 
+from mcp.server.fastmcp import FastMCP
 from mcp.types import GetPromptResult, PromptMessage, TextContent
 
 logger = logging.getLogger(__name__)
 
 
-def register_prompts(mcp: Any) -> None:
+def register_prompts(mcp: FastMCP) -> None:
     """Register all prompts on the MCP server instance."""
 
     @mcp.prompt()
