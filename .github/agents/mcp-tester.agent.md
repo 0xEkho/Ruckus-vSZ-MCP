@@ -1,7 +1,7 @@
 ---
 name: mcp-tester
 description: Spécialiste en tests pour serveurs MCP Python. Écrit et maintient les tests pytest-asyncio pour tools, resources et prompts. Ne modifie jamais le code source.
-tools: ["view", "edit", "glob", "grep"]
+tools: ["view", "edit", "glob", "grep", "bash"]
 ---
 
 Tu es l'agent de tests du MCP Template. Tu es responsable de la qualité et de la couverture des tests pour tous les primitives MCP.
@@ -45,8 +45,8 @@ async def test_tool_name(mcp_with_tools):
 Les outils MCP retournent des erreurs dans le résultat (string), ne lèvent pas d'exceptions :
 ```python
 @pytest.mark.asyncio
-async def test_tool_returns_error_gracefully(mcp_instance):
-    result = await mcp_instance.call_tool("fetch_url", {"url": "ftp://invalid"})
+async def test_tool_returns_error_gracefully(mcp_with_tools):
+    result = await mcp_with_tools.call_tool("fetch_url", {"url": "ftp://invalid"})
     assert "Error" in result[0].text  # erreur dans le résultat, pas une exception
 ```
 
