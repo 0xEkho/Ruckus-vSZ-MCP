@@ -19,7 +19,11 @@ logger = logging.getLogger(__name__)
 
 
 def register_tools(mcp: FastMCP) -> None:
-    """Register all tools on the MCP server instance."""
+    """Register all tools on the MCP server instance.
+
+    Args:
+        mcp: The FastMCP server instance to register tools on.
+    """
 
     @mcp.tool()
     async def echo(message: str) -> str:

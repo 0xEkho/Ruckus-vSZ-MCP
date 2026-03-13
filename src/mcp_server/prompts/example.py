@@ -19,7 +19,11 @@ logger = logging.getLogger(__name__)
 
 
 def register_prompts(mcp: FastMCP) -> None:
-    """Register all prompts on the MCP server instance."""
+    """Register all prompts on the MCP server instance.
+
+    Args:
+        mcp: The FastMCP server instance to register prompts on.
+    """
 
     @mcp.prompt()
     def summarize(text: str, language: str = "English") -> GetPromptResult:

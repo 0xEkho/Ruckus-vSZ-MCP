@@ -12,7 +12,6 @@ def mcp_with_resources():
     return instance
 
 
-@pytest.mark.asyncio
 async def test_server_info_resource_exists(mcp_with_resources):
     """Test that config://server-info resource is registered."""
     resources = await mcp_with_resources.list_resources()
@@ -20,7 +19,6 @@ async def test_server_info_resource_exists(mcp_with_resources):
     assert "config://server-info" in uris
 
 
-@pytest.mark.asyncio
 async def test_getting_started_resource_exists(mcp_with_resources):
     """Test that docs://getting-started resource is registered."""
     resources = await mcp_with_resources.list_resources()
@@ -28,11 +26,10 @@ async def test_getting_started_resource_exists(mcp_with_resources):
     assert "docs://getting-started" in uris
 
 
-@pytest.mark.asyncio
 async def test_server_info_content(mcp_with_resources):
     """Test that server-info resource returns expected content."""
     result = await mcp_with_resources.read_resource("config://server-info")
-    # read_resource returns content as string or list; normalize to string
-    content = result if isinstance(result, str) else str(result)
+    assert len(result) > 0
+    content = result[0].text
     assert "mcp-server" in content
     assert "0.1.0" in content

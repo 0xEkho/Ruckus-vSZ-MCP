@@ -9,7 +9,7 @@ Ce fichier décrit les agents Copilot disponibles pour ce projet et leurs règle
 ## Vue d'ensemble du projet
 
 Ce repo est un **template Python pour créer des serveurs MCP** (Model Context Protocol).
-- Stack : Python 3.12, `uv`, `FastMCP` (mcp>=1.2.0)
+- Stack : Python ≥3.10 (runtime recommandé : 3.12), `uv`, `FastMCP` (mcp>=1.2.0)
 - Transport : STDIO (par défaut)
 - Structure : `src/mcp_server/{server.py, tools/, resources/, prompts/}` + `tests/`
 

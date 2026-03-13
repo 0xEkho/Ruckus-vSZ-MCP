@@ -20,7 +20,7 @@ Template Python pour créer des serveurs **MCP (Model Context Protocol)** avec [
 
 ```bash
 # 1. Cloner le dépôt
-git clone https://github.com/votre-utilisateur/MCP-Template.git
+git clone https://github.com/0xEkho/MCP-Template.git
 cd MCP-Template
 
 # 2. Copier le fichier de configuration
@@ -39,6 +39,13 @@ uv run mcp-server
 
 ```
 MCP-Template/
+├── .github/
+│   ├── agents/                    # Agents Copilot spécialisés
+│   │   ├── mcp-developer.agent.md
+│   │   ├── mcp-documenter.agent.md
+│   │   ├── mcp-scaffolder.agent.md
+│   │   └── mcp-tester.agent.md
+│   └── copilot-instructions.md    # Routage obligatoire vers les agents
 ├── src/
 │   └── mcp_server/
 │       ├── __init__.py
@@ -57,6 +64,8 @@ MCP-Template/
 │   ├── test_tools.py
 │   ├── test_resources.py
 │   └── test_prompts.py
+├── AGENTS.md                      # Vue d'ensemble des agents et best practices
+├── LICENSE
 ├── .env.example                   # Variables d'environnement à copier vers .env
 ├── .python-version                # Version Python gérée par uv
 ├── pyproject.toml                 # Configuration du projet et des dépendances
@@ -264,13 +273,14 @@ Ces bonnes pratiques sont issues des [spécifications officielles MCP](https://m
 
 1. **Ne jamais écrire sur `stdout` avec le transport STDIO** — toute sortie sur `stdout` corromprait le protocole. Utilisez exclusivement `logging` vers `stderr` :
    ```python
+   import sys
    logging.basicConfig(stream=sys.stderr)
    ```
 
 2. **Retourner les erreurs dans le résultat d'un outil, ne pas lever d'exceptions** — renvoyez un message d'erreur explicite plutôt que de laisser une exception se propager :
    ```python
-   if not url.startswith("https://"):
-       return "Error: URL must start with https://"
+   if not url.startswith(("http://", "https://")):
+       return "Error: URL must start with http:// or https://"
    ```
 
 3. **Utiliser des type hints et des docstrings** — FastMCP génère automatiquement les schémas JSON à partir des annotations de type et des docstrings :

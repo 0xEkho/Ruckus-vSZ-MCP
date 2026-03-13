@@ -16,6 +16,7 @@ Tu ne dois **JAMAIS** implémenter directement du code, des tests ou de la docum
 | Écrire ou modifier des tests dans `tests/` | **mcp-tester** |
 | Modifier `pyproject.toml`, `.gitignore`, `.env.example` | **mcp-scaffolder** |
 | Mettre à jour `README.md`, docstrings, `AGENTS.md` | **mcp-documenter** |
+| Modifier `AGENTS.md`, `.github/copilot-instructions.md` | **mcp-documenter** |
 | Tâche multi-domaines | Déléguer à **chaque agent concerné**, dans l'ordre : scaffolder → developer → tester → documenter |
 
 ## Protocole de réponse
@@ -36,3 +37,4 @@ Ces règles doivent être rappelées et vérifiées par les agents :
 - ✅ Type hints sur tous les paramètres
 - ✅ Docstrings sur chaque primitive (tool, resource, prompt)
 - ✅ Secrets uniquement dans `.env` (jamais hardcodés)
+- ✅ Tester avec MCP Inspector avant toute intégration client : `npx @modelcontextprotocol/inspector uv run mcp-server`

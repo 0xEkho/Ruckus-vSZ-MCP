@@ -49,6 +49,10 @@ Thumbs.db
 .coverage
 htmlcov/
 .tox/
+*.log
+coverage.xml
+.mypy_cache/
+.ruff_cache/
 
 # MCP Inspector
 .mcp-inspector/

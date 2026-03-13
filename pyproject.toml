@@ -3,9 +3,9 @@ name = "mcp-server"
 version = "0.1.0"
 description = "A template for building MCP (Model Context Protocol) servers in Python"
 readme = "README.md"
-license = { text = "MIT" }
+license = { file = "LICENSE" }
 requires-python = ">=3.10"
-keywords = ["mcp", "model-context-protocol", "ai", "llm", "fastmcp", "template"]
+keywords = ["mcp", "model-context-protocol", "ai", "llm", "server", "template"]
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Developers",
@@ -48,3 +48,12 @@ dev-dependencies = [
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+addopts = "--tb=short"
+
+[tool.coverage.run]
+source = ["src/mcp_server"]
+omit = ["*/tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false

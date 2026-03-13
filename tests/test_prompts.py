@@ -12,7 +12,6 @@ def mcp_with_prompts():
     return instance
 
 
-@pytest.mark.asyncio
 async def test_summarize_prompt_exists(mcp_with_prompts):
     """Test that summarize prompt is registered."""
     prompts = await mcp_with_prompts.list_prompts()
@@ -20,17 +19,14 @@ async def test_summarize_prompt_exists(mcp_with_prompts):
     assert "summarize" in names
 
 
-@pytest.mark.asyncio
 async def test_summarize_prompt_returns_messages(mcp_with_prompts):
     """Test that summarize prompt returns a user message with the text."""
     result = await mcp_with_prompts.get_prompt("summarize", {"text": "Hello world"})
-    assert result.messages
-    assert len(result.messages) > 0
+    assert len(result.messages) == 1
     assert result.messages[0].role == "user"
     assert "Hello world" in result.messages[0].content.text
 
 
-@pytest.mark.asyncio
 async def test_summarize_prompt_uses_language(mcp_with_prompts):
     """Test that summarize prompt includes the specified language."""
     result = await mcp_with_prompts.get_prompt(

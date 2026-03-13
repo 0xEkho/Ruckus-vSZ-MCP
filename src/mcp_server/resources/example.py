@@ -10,6 +10,7 @@ Best practices:
 - Resources should be read-only and stable
 """
 import logging
+import os
 
 from mcp.server.fastmcp import FastMCP
 
@@ -17,7 +18,11 @@ logger = logging.getLogger(__name__)
 
 
 def register_resources(mcp: FastMCP) -> None:
-    """Register all resources on the MCP server instance."""
+    """Register all resources on the MCP server instance.
+
+    Args:
+        mcp: The FastMCP server instance to register resources on.
+    """
 
     @mcp.resource("config://server-info")
     def server_info() -> str:
@@ -25,9 +30,11 @@ def register_resources(mcp: FastMCP) -> None:
 
         Returns key metadata about this MCP server instance.
         """
+        name = os.getenv("MCP_SERVER_NAME", "mcp-server")
+        version = os.getenv("MCP_SERVER_VERSION", "0.1.0")
         return (
-            "Server: mcp-server\n"
-            "Version: 0.1.0\n"
+            f"Server: {name}\n"
+            f"Version: {version}\n"
             "Transport: stdio\n"
             "Description: MCP Template Server\n"
         )

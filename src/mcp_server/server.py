@@ -9,14 +9,17 @@ import os
 import sys
 
 from dotenv import load_dotenv
-from mcp.server.fastmcp import FastMCP
-
-from mcp_server.prompts.example import register_prompts
-from mcp_server.resources.example import register_resources
-from mcp_server.tools.example import register_tools
 
 # Load environment variables from .env file (if present)
+# MUST be done before any local import so that os.getenv() calls at module
+# level in sub-modules see the values from .env.
 load_dotenv()
+
+from mcp.server.fastmcp import FastMCP  # noqa: E402
+
+from mcp_server.prompts.example import register_prompts  # noqa: E402
+from mcp_server.resources.example import register_resources  # noqa: E402
+from mcp_server.tools.example import register_tools  # noqa: E402
 
 # Configure logging to stderr ONLY (never stdout for STDIO transport)
 logging.basicConfig(
@@ -32,14 +35,14 @@ mcp = FastMCP(
     version=os.getenv("MCP_SERVER_VERSION", "0.1.0"),
 )
 
-# Register all primitives on the server instance
-register_tools(mcp)
-register_resources(mcp)
-register_prompts(mcp)
-
 
 def main() -> None:
     """Start the MCP server using the STDIO transport."""
+    # Register all primitives on the server instance
+    register_tools(mcp)
+    register_resources(mcp)
+    register_prompts(mcp)
+
     logger.info("Starting MCP server...")
     mcp.run(transport="stdio")
 

@@ -34,7 +34,6 @@ def mcp_with_tools():
 
 ### Test d'un outil
 ```python
-@pytest.mark.asyncio
 async def test_tool_name(mcp_with_tools):
     result = await mcp_with_tools.call_tool("tool_name", {"param": "value"})
     assert len(result) > 0
@@ -44,7 +43,6 @@ async def test_tool_name(mcp_with_tools):
 ### Test des erreurs (important)
 Les outils MCP retournent des erreurs dans le résultat (string), ne lèvent pas d'exceptions :
 ```python
-@pytest.mark.asyncio
 async def test_tool_returns_error_gracefully(mcp_with_tools):
     result = await mcp_with_tools.call_tool("fetch_url", {"url": "ftp://invalid"})
     assert "Error" in result[0].text  # erreur dans le résultat, pas une exception

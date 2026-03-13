@@ -1,4 +1,5 @@
 """Tests for MCP tools."""
+import httpx
 import pytest
 from unittest.mock import AsyncMock, patch
 from mcp.server.fastmcp import FastMCP
@@ -13,14 +14,12 @@ def mcp_with_tools():
     return instance
 
 
-@pytest.mark.asyncio
 async def test_echo_tool_exists(mcp_with_tools):
     """Test that echo tool is registered."""
     tools = {t.name: t for t in await mcp_with_tools.list_tools()}
     assert "echo" in tools
 
 
-@pytest.mark.asyncio
 async def test_echo_returns_message(mcp_with_tools):
     """Test that echo tool returns the message prefixed with 'Echo: '."""
     result = await mcp_with_tools.call_tool("echo", {"message": "hello"})
@@ -28,7 +27,6 @@ async def test_echo_returns_message(mcp_with_tools):
     assert "hello" in result[0].text
 
 
-@pytest.mark.asyncio
 async def test_fetch_url_rejects_invalid_url(mcp_with_tools):
     """Test that fetch_url returns an error for non-HTTP URLs."""
     result = await mcp_with_tools.call_tool("fetch_url", {"url": "ftp://example.com"})
@@ -36,11 +34,8 @@ async def test_fetch_url_rejects_invalid_url(mcp_with_tools):
     assert "Error" in result[0].text
 
 
-@pytest.mark.asyncio
 async def test_fetch_url_handles_http_error(mcp_with_tools):
     """Test that fetch_url handles HTTP errors gracefully."""
-    import httpx
-
     with patch("mcp_server.tools.example.httpx.AsyncClient") as mock_client_class:
         mock_client = AsyncMock()
         mock_client_class.return_value.__aenter__ = AsyncMock(return_value=mock_client)
@@ -50,7 +45,9 @@ async def test_fetch_url_handles_http_error(mcp_with_tools):
         mock_response.status_code = 404
         mock_client.get = AsyncMock(
             side_effect=httpx.HTTPStatusError(
-                "404", request=AsyncMock(), response=mock_response
+                "404",
+                request=httpx.Request("GET", "https://example.com/notfound"),
+                response=mock_response,
             )
         )
 
