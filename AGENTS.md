@@ -1,5 +1,9 @@
 # AGENTS.md — MCP Template
 
+> **INSTRUCTION OBLIGATOIRE** : Pour toute tâche dans ce projet, Copilot doit déléguer
+> au bon agent spécialisé (voir table ci-dessous). Ne jamais implémenter directement
+> sans passer par l'agent approprié.
+
 Ce fichier décrit les agents Copilot disponibles pour ce projet et leurs règles de collaboration.
 
 ## Vue d'ensemble du projet
