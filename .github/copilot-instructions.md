@@ -2,31 +2,30 @@
 
 Ce fichier est lu automatiquement par Copilot CLI et VS Code Copilot à chaque session dans ce repo.
 
-## RÈGLE ABSOLUE : Délégation obligatoire aux agents spécialisés
+## RÈGLE ABSOLUE : Les 4 agents sont invoqués à CHAQUE prompt
 
-Pour **toute tâche** dans ce projet, tu **DOIS** déléguer au bon agent spécialisé.
-Tu ne dois **JAMAIS** implémenter directement du code, des tests ou de la documentation sans passer par l'agent approprié.
+Pour **tout prompt** dans ce projet, tu **DOIS** invoquer les **4 agents en parallèle**, sans exception.
+Même si la tâche ne concerne qu'un seul domaine, chaque agent effectue son audit de cohérence sur son périmètre.
+Tu ne dois **JAMAIS** implémenter directement du code, des tests ou de la documentation sans passer par les agents.
 
-## Table de routage obligatoire
+## Ordre d'invocation obligatoire (toujours les 4, toujours en parallèle)
 
-| Tâche demandée | Agent à utiliser OBLIGATOIREMENT |
-|----------------|----------------------------------|
-| Ajouter / modifier un tool, resource ou prompt | **mcp-developer** |
-| Modifier `server.py`, la structure `src/` | **mcp-developer** |
-| Écrire ou modifier des tests dans `tests/` | **mcp-tester** |
-| Modifier `pyproject.toml`, `.gitignore`, `.env.example` | **mcp-scaffolder** |
-| Mettre à jour `README.md`, docstrings, `AGENTS.md` | **mcp-documenter** |
-| Modifier `AGENTS.md`, `.github/copilot-instructions.md` | **mcp-documenter** |
-| Tâche multi-domaines | Déléguer à **chaque agent concerné**, dans l'ordre : scaffolder → developer → tester → documenter |
+| Ordre | Agent | Responsabilité à chaque prompt |
+|-------|-------|-------------------------------|
+| 1 | **mcp-scaffolder** | Vérifie/met à jour config projet (pyproject.toml, .gitignore, .env.example) |
+| 2 | **mcp-developer** | Implémente/vérifie le code source dans `src/` |
+| 3 | **mcp-tester** | Écrit/vérifie les tests dans `tests/` |
+| 4 | **mcp-documenter** | Met à jour README.md, AGENTS.md, docstrings |
 
 ## Protocole de réponse
 
 Pour chaque prompt reçu, tu dois :
 
-1. **Identifier** quel(s) agent(s) est concerné
-2. **Annoncer** explicitement : *"Je délègue cette tâche à [nom-agent]"*
-3. **Utiliser** l'agent via le tool `task` avec `agent_type` approprié
+1. **Annoncer** : *"J'invoque les 4 agents en parallèle"*
+2. **Lancer** les 4 agents **simultanément** via le tool `task` (appels parallèles dans la même réponse)
+3. **Consolider** les résultats des 4 agents et les présenter
 4. **Ne jamais** bypasser les agents pour écrire du code directement
+5. Si un agent n'a rien à faire sur un prompt donné → il répond "RAS" mais **doit quand même être invoqué**
 
 ## Rappels MCP non négociables
 

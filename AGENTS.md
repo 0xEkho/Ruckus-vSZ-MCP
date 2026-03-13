@@ -1,8 +1,8 @@
 # AGENTS.md — MCP Template
 
-> **INSTRUCTION OBLIGATOIRE** : Pour toute tâche dans ce projet, Copilot doit déléguer
-> au bon agent spécialisé (voir table ci-dessous). Ne jamais implémenter directement
-> sans passer par l'agent approprié.
+> **INSTRUCTION OBLIGATOIRE** : Pour **tout prompt** dans ce projet, Copilot doit invoquer
+> les **4 agents en parallèle**, sans exception. Chaque agent audite et agit sur son domaine.
+> Ne jamais implémenter directement sans passer par les agents.
 
 Ce fichier décrit les agents Copilot disponibles pour ce projet et leurs règles de collaboration.
 
@@ -22,14 +22,14 @@ Ce repo est un **template Python pour créer des serveurs MCP** (Model Context P
 | `mcp-tester` | `.github/agents/mcp-tester.agent.md` | Tests pytest-asyncio |
 | `mcp-documenter` | `.github/agents/mcp-documenter.agent.md` | README, docstrings, documentation |
 
-## Règle d'or : séparation des responsabilités
+## Règle d'or : invocation parallèle des 4 agents à chaque prompt
 
 ```
-pyproject.toml / .gitignore / .env.example  →  mcp-scaffolder
-src/mcp_server/**                           →  mcp-developer
-tests/**                                    →  mcp-tester
-README.md / AGENTS.md / docstrings          →  mcp-documenter
+Chaque prompt → mcp-scaffolder + mcp-developer + mcp-tester + mcp-documenter (en parallèle)
 ```
+
+Chaque agent vérifie son domaine même si la tâche ne le concerne pas directement.
+Si rien à faire → l'agent répond "RAS" mais **doit être invoqué**.
 
 ## Flux de travail pour une nouvelle fonctionnalité
 
