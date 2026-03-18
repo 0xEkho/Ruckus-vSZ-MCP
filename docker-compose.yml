@@ -1,0 +1,38 @@
+# Ruckus vSZ — MCP Server
+# Docker Compose — production deployment
+#
+# Usage:
+#   cp .env.example .env
+#   # Edit .env: set VSZ_USERNAME, VSZ_PASSWORD, MCP_API_KEY, etc.
+#   docker compose up -d
+#   docker compose logs -f
+#
+# Notes:
+#   - Environment variables are loaded from .env (never committed to VCS).
+#   - MCP_HOST must be set to 0.0.0.0 in .env so uvicorn binds inside the container.
+#   - MCP_PORT defaults to 8081.
+
+services:
+  mcp-server:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM python:3.12-slim
+        WORKDIR /app
+        RUN pip install uv
+        COPY pyproject.toml .
+        COPY LICENSE .
+        COPY README.md .
+        COPY src/ src/
+        RUN uv pip install --system -e .
+        CMD ["ruckus-vsz-mcp"]
+    env_file: .env
+    ports:
+      - "${MCP_PORT:-8081}:${MCP_PORT:-8081}"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket,sys; s=socket.create_connection(('localhost',${MCP_PORT:-8081}),2); s.close()"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

@@ -48,6 +48,12 @@ Thumbs.db
 .pytest_cache/
 .coverage
 htmlcov/
+system_prompt*
+
+# Project-specific
+API_ENDPOINTS.md
+api_endpoints.json
+tmp/
 .tox/
 *.log
 coverage.xml

@@ -30,6 +30,7 @@ async def test_server_info_content(mcp_with_resources):
     """Test that server-info resource returns expected content."""
     result = await mcp_with_resources.read_resource("config://server-info")
     assert len(result) > 0
-    content = result[0].text
+    # mcp >=1.26: ReadResourceContents uses .content, not .text
+    content = result[0].content if hasattr(result[0], "content") else result[0].text
     assert "mcp-server" in content
     assert "0.1.0" in content
