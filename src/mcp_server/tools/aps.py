@@ -137,14 +137,30 @@ def register_tools(mcp: FastMCP) -> None:
         return json.dumps(result, indent=2)
 
     @mcp.tool()
-    async def vsz_list_ap_lldp(host: str, ap_mac: str) -> str:
-        """Get LLDP neighbour information discovered by an AP.
+    async def vsz_list_ap_mesh_neighbors(host: str, ap_mac: str) -> str:
+        """Get mesh neighbor APs discovered by an AP (mesh topology).
 
         Args:
             host: vSZ controller IP or hostname.
             ap_mac: AP MAC address.
         """
         result = await api_get(host, f"/{V}/aps/{ap_mac}/operational/neighbor")
+        if isinstance(result, str):
+            return result
+        return json.dumps(result, indent=2)
+
+    @mcp.tool()
+    async def vsz_list_ap_lldp_neighbors(host: str, ap_mac: str) -> str:
+        """Get LLDP neighbor devices discovered by an AP (switches, phones, etc.).
+
+        Returns the list of LLDP neighbors with chassis ID, system name,
+        port description, capabilities, management IP and power info.
+
+        Args:
+            host: vSZ controller IP or hostname.
+            ap_mac: AP MAC address (e.g. 00:33:58:07:70:E0).
+        """
+        result = await api_get(host, f"/{V}/aps/{ap_mac}/apLldpNeighbors")
         if isinstance(result, str):
             return result
         return json.dumps(result, indent=2)
@@ -182,10 +198,13 @@ def register_tools(mcp: FastMCP) -> None:
 
         Uses the vSZ query API to search APs by criteria.
 
+        Note: DOMAIN-type filters may return 403 depending on the API
+        account privileges. Prefer full_text_search when possible.
+
         Args:
             host: vSZ controller IP or hostname.
-            filters: JSON string of filter criteria (e.g. '[{"type":"DOMAIN","value":"..."}]').
-            full_text_search: Free-text search across AP fields.
+            filters: JSON string of filter criteria (e.g. '[{"type":"ZONE","value":"..."}]').
+            full_text_search: Free-text search across AP fields (recommended).
         """
         body: dict[str, Any] = {}
         if filters:
