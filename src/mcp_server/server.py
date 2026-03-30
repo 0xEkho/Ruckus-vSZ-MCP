@@ -67,7 +67,6 @@ mcp = FastMCP(
     os.getenv("MCP_SERVER_NAME", "ruckus-vsz-mcp"),
     host=os.getenv("MCP_HOST", "127.0.0.1"),
     port=int(os.getenv("MCP_PORT", "8081")),
-    json_response=os.getenv("MCP_JSON_RESPONSE", "true").lower() in ("true", "1", "yes"),
 )
 
 
